@@ -1,4 +1,4 @@
-"use script"
+"use strict"
 
 const left = document.querySelector('.slider__arrow_prev');
 const right = document.querySelector('.slider__arrow_next');

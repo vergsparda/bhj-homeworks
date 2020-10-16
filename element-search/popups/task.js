@@ -1,4 +1,5 @@
-'use script'
+'use strict'
+
 document.getElementById("modal_main").classList.add("modal_active");
 
 function closePopup() {
@@ -10,7 +11,7 @@ const closers = Array.from(document.getElementsByClassName("modal__close_times")
 closers.forEach(e => e.addEventListener("click", closePopup));
 
 function doWell() {
-  // document.getElementsByClassName()
+  closePopup();
   document.getElementById("modal_success").classList.add("modal_active");
 }
 
