@@ -6,10 +6,11 @@ function rotator() {
   let item = rotateText.find(item => item.classList.contains("rotator__case_active"));
   let index = rotateText.findIndex(item => item.classList.contains("rotator__case_active"));
   item.classList.remove("rotator__case_active");
-  if (index <rotateText.length - 1){
-    rotateText[index].nextElementSibling.classList.add("rotator__case_active");
-    rotateText[index].nextElementSibling.style.color = rotateText[index].nextElementSibling.dataset.color;
-    delay = rotateText[index].nextElementSibling.dataset.speed;
+  let nextEl = rotateText[index].nextElementSibling;
+  if (index < rotateText.length - 1){
+    nextEl.classList.add("rotator__case_active");
+    nextEl.style.color = nextEl.dataset.color;
+    delay = nextEl.dataset.speed;
   } else {
     rotateText[0].classList.add("rotator__case_active");
     rotateText[0].style.color = rotateText[0].dataset.color;
