@@ -4,7 +4,7 @@ let delay = 0;
 
 function rotator() {
   let item = rotateText.find(item => item.classList.contains("rotator__case_active"));
-  let index = rotateText.findIndex(item => item.classList.contains("rotator__case_active"));
+  let index = rotateText.indexOf(item);
   item.classList.remove("rotator__case_active");
   let nextEl = rotateText[index].nextElementSibling;
   if (index < rotateText.length - 1){
