@@ -4,7 +4,7 @@ const progress = document.getElementById('progress'),
   form = document.getElementById('form');
 
 function changeProgress() {
-  progress.value += 0.002;
+  progress.value += 0.005;
 };
 
 form.addEventListener('submit', (e) => {
