@@ -1,4 +1,4 @@
-// `use strict`
+`use strict`
 
 const tooltips = Array.from(document.querySelectorAll(".has-tooltip"));
 let activeTip;

@@ -1,76 +1,69 @@
 `use strict`
 
-const addButtons = Array.from(document.querySelectorAll('.product__add')),
-  productValue = Array.from(document.querySelectorAll('.product__quantity-value')),
-  quantityInc = Array.from(document.querySelectorAll('.product__quantity-control_inc')),
-  quantityDec = Array.from(document.querySelectorAll('.product__quantity-control_dec')),
+const cartBlock = document.querySelector('.cart'),
   cart = document.querySelector('.cart__products'),
   products = Array.from(document.querySelectorAll('.product'));
 
-function findValue(num) {
-  for (let i = 0; i < productValue.length; i++) {
-    if (i === num) return productValue[i];
-  }
-}
+function getProductHTML(item) {
+  return `<div class="cart__product" data-id="${item.id}">
+                <img class="cart__product-image" src="${item.img.src}">
+                <div class="cart__product-delete">&times;</div>
+                <div class="cart__product-count">${item.amount.textContent}</div>
+            </div>`;
+};
 
-function findProduct(num) {
-  const productValues = Array.from(document.querySelectorAll('.product__quantity-value'));
-  for (let p = 0; p < products.length; p++) {
-    if (p === num) return products[p];
-  }
-}
+function productFound (newItemID) {
+    return inCart.find( item => {
+      return item.dataset.id === newItemID;
+    });
+};
 
-function findCartData(id) {
-  const cartProducts = Array.from(document.querySelectorAll('.cart__product'));
-  for (let i = 0; i < cartProducts.length; i++) {
-    const cartId = cartProducts[i].getAttribute("data-id");
-    if (cartId === id) return cartProducts[i];
-  }
-}
+for (const product of products) {
+  const buttons = {
+    dec: product.querySelector('.product__quantity-control_dec'),
+    inc: product.querySelector('.product__quantity-control_inc'),
+    add: product.querySelector('.product__add')
+  };
 
-for (let i = 0; i < quantityInc.length; i++) {
-  quantityInc[i].addEventListener('click', e => {
-    e.preventDefault();
-    const value = findValue(i);
-    value.textContent = +(value.textContent) + 1;
+  const newItem = {
+    amount: product.querySelector('.product__quantity-value'),
+    id: product.dataset.id,
+    img: product.querySelector('.product__image')
+  };
+
+  buttons.dec.addEventListener('click', () => {
+    if (+newItem.amount.textContent === 1) return;
+    newItem.amount.textContent--;
   });
-}
-for (let i = 0; i < quantityDec.length; i++) {
-  quantityDec[i].addEventListener('click', e => {
-    e.preventDefault();
-    const value = findValue(i);
-    const numValue = +(value.textContent);
-    if (numValue <= 1) {
-      value.textContent = 1;
+
+  buttons.inc.addEventListener('click', () => {
+    newItem.amount.textContent++;
+  });
+
+  buttons.add.addEventListener('click', () => {
+    inCart = Array.from(cart.children);
+
+    if (productFound(newItem.id) === undefined) {
+      cart.insertAdjacentHTML('afterbegin', getProductHTML(newItem));
+      cartBlock.classList.add('cart-active');
     } else {
-      value.textContent = +(value.textContent) - 1;
+      inCart.forEach(item => {
+        if (item.dataset.id === newItem.id) {
+          const amountCurrensy = item.querySelector('.cart__product-count');
+          const newItemAmount = +amountCurrensy.textContent + +newItem.amount.textContent;
+          amountCurrensy.textContent = newItemAmount;
+        };
+      });
+    };
+  });
+}
+
+cart.addEventListener('click', (e) => {
+  const button = e.target;
+  if (button.classList.contains('cart__product-delete')) {
+    button.closest('.cart__product').remove();
+    if (cart.children.length === 0) {
+      cartBlock.classList.remove('cart-active');
     }
-  });
-}
-
-function addProductToCart(num) {
-  const product = findProduct(num),
-    productId = product.getAttribute("data-id"),
-    img = product.querySelector(".product__image").getAttribute('src'),
-    value = findValue(num),
-    quantity = +(value.textContent),
-    cartData = findCartData(productId);
-
-  if(cartData) {
-    const quantityCart = cartData.querySelector('.cart__product-count');
-    quantityCart.textContent = +(quantityCart.textContent) + quantity;
-  } else {
-    cart.innerHTML += `
-        <div class="cart__product" data-id="${productId}">
-            <img class="cart__product-image" src="${img}">
-            <div class="cart__product-count">${quantity}</div>
-        </div>`;
   }
-}
-
-for (let i = 0; i < addButtons.length; i++){
-  addButtons[i].addEventListener ('click', e => {
-    e.preventDefault();
-    addProductToCart(i);
-  });
-}
+});

@@ -10,18 +10,20 @@ function addTask() {
     input.value = '';
   }
 }
-input.addEventListener('change', (e) => {
-  // e.preventDefault();
-  addTask();
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    addTask();
+  }
 })
 
 taskButton.addEventListener('click', (e) => {
+  e.preventDefault();
   addTask();
 });
 
 taskList.addEventListener('click', (e) => {
   let target = e.target;
-  if (target.classList.contains('task__remove')){
+  if (target.classList.contains('task__remove')) {
     target.parentElement.remove();
   }
 })
