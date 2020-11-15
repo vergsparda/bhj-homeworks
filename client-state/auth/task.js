@@ -8,7 +8,12 @@ const welcome = document.querySelector('.welcome'),
   xhr = new XMLHttpRequest();
 
 window.addEventListener('load', () => {
-  signin.classList.add('signin_active');
+  if (localStorage.userId) {
+    welcome.classList.add('welcome_active');
+    userId.innerText = localStorage.userId;
+  } else {
+    signin.classList.add('signin_active');
+  }
 });
 
 signButton.addEventListener('click', sentData);
@@ -29,7 +34,7 @@ function sentData(event) {
       } else {
         alert ('Неверный логин или пароль');
       }
-    }
+    };
   });
   xhr.send(formData);
 }

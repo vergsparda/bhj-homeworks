@@ -3,25 +3,15 @@
 const clear = document.querySelector('.button'),
   editor = document.getElementById('editor');
 
-function getText() {
-  try {
-    return JSON.parse(localStorage.getItem('note'));
-  } catch (e) {
-    return null;
-  }
-}
-
-editor.addEventListener('change', () => {
-  const text = editor.value;
-  localStorage.note = JSON.stringify(text);
+window.addEventListener('load', () => {
+  editor.value = localStorage.getItem('note');
 });
 
-window.addEventListener('load', () => {
-  const text = getText();
-  editor.value = text;
+window.addEventListener('beforeunload', () => {
+    localStorage.note = editor.value;
 });
 
 clear.addEventListener('click', () => {
   editor.value = '';
-  localStorage.note = '';
-})
+  localStorage.removeItem('note');
+});
